@@ -14,23 +14,20 @@
 #include <memory>
 #include <mutex>
 
-//Windows dll EXPORT definition
-//TODO: add Cross-platform dynamic library macros
+//_ITMA_EXPORT definition
 #ifdef ITMA_EXPORT
 #	if defined(_WIN32)
-#		define EXPORT __declspec(dllexport)
+#		define _ITMA_EXPORT __declspec(dllexport)
 #	elif defined(__GNUC__)
-#		define EXPORT __attribute__((visibility("default")))
+#		define _ITMA_EXPORT __attribute__((visibility("default")))
 #	else
-#		define EXPORT
+#		define _ITMA_EXPORT
 #	endif
 #elif defined(_WIN32)
-#	define EXPORT __declspec(dllimport)
+#	define _ITMA_EXPORT __declspec(dllimport)
 #else
-#	define EXPORT
+#	define _ITMA_EXPORT
 #endif //MTMA_EXPORT
-
-/* TODO: Make EXPORT macro compatible with Unix compilers for dynamic link library creation. */
 
 #include "custom_vector.h"
 #include "custom_queue.h"
@@ -39,7 +36,7 @@ namespace ITMA
 {
 	class pipe;
 
-	class EXPORT MContext
+	class _ITMA_EXPORT MContext
 	{
 		std::thread context;
 		CustomVector<std::shared_ptr<pipe>> pipes;
@@ -54,7 +51,7 @@ namespace ITMA
 	};
 
 	//ZMQPP socket style setup
-	class EXPORT Channel
+	class _ITMA_EXPORT Channel
 	{
 		std::shared_ptr<pipe> pip;
 		MContext & _ctx;
@@ -152,7 +149,7 @@ namespace ITMA
 		}
 	};
 
-	class EXPORT pipe
+	class _ITMA_EXPORT pipe
 	{
 		CustomQueue<Message> in; //incoming messages
 		CustomQueue<Message> out; //outgoing messages
