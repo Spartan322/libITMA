@@ -17,9 +17,17 @@
 //Windows dll EXPORT definition
 //TODO: add Cross-platform dynamic library macros
 #ifdef ITMA_EXPORT
-#define EXPORT __declspec(dllexport)
+#	if defined(_WIN32)
+#		define EXPORT __declspec(dllexport)
+#	elif defined(__GNUC__)
+#		define EXPORT __attribute__((visibility("default")))
+#	else
+#		define EXPORT
+#	endif
+#elif defined(_WIN32)
+#	define EXPORT __declspec(dllimport)
 #else
-#define EXPORT __declspec(dllimport)
+#	define EXPORT
 #endif //MTMA_EXPORT
 
 /* TODO: Make EXPORT macro compatible with Unix compilers for dynamic link library creation. */
